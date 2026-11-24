@@ -1,0 +1,34 @@
+---
+// An analytic surface, sampled on a regular grid and projected into the page.
+const height = (x: number, y: number) =>
+  1.9 * Math.exp(-2.4 * ((x - 0.44) ** 2 + (y - 0.18) ** 2)) +
+  1.02 * Math.exp(-3.6 * ((x + 0.65) ** 2 + (y + 0.55) ** 2)) -
+  0.28 * Math.exp(-5 * ((x + 0.06) ** 2 + (y - 0.65) ** 2));
+function point(x: number, y: number) {
+  const z = height(x, y);
+  return [(230 + 79 * x - 61 * y).toFixed(2), (202 + 28 * x + 30 * y - 78 * z).toFixed(2)].join(',');
+}
+const steps = 46;
+const samples = Array.from({length: steps + 1}, (_, i) => -1.43 + 2.86 * i / steps);
+const path = (points: string[]) => 'M' + points.join(' L');
+const strips = samples.slice(0, -1).map((y, i) => ({
+  fill: path([...samples.map(x => point(x, y)), ...[...samples].reverse().map(x => point(x, samples[i + 1]))]) + 'Z',
+  edge: path(samples.map(x => point(x, samples[i + 1]))),
+  cross: samples.map(x => 'M' + point(x, y) + 'L' + point(x, samples[i + 1])).join(' '),
+}));
+---
+<figure class="surface">
+  <div class="plot-paper">
+    <svg viewBox="0 0 460 308" aria-hidden="true" class="landscape">
+      <g fill="none" stroke="var(--plot-axis)" stroke-width=".9">
+        <path d="M20 205L230 128 441 208 M230 128V29" stroke-dasharray="3 5" />
+        <path d="M24 202L253 291 443 204" />
+      </g>
+      {strips.map(s => <g><path d={s.fill} fill="var(--plot-fill)"/><path d={s.cross} fill="none" stroke="var(--mesh-cross)" stroke-width=".7"/><path d={s.edge} fill="none" stroke="var(--mesh)" stroke-width="1.05"/></g>)}
+      <g fill="var(--accent)" font-family="Georgia, serif" font-style="italic" font-size="14">
+        <text x="11" y="200">x</text><text x="444" y="204">y</text><text x="225" y="24">z</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption><span class="line-key" aria-hidden="true"></span>Representation space <span class="figure-note">Conceptual sketch</span></figcaption>
+</figure>

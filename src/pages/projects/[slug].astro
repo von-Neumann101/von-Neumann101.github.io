@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {projects, type Project} from '../../data/projects';
+export function getStaticPaths() {
+  return projects.map(project => ({ params: {slug: project.slug}, props: {project} }));
+}
+interface Props { project: Project }
+const {project} = Astro.props;
+const other = projects.find(p => p.slug !== project.slug);
+---
+<Layout title={project.title} description={project.summary}>
+  <article class="detail">
+    <a href="/#projects" class="read-link">All projects</a>
+    <header class="detail-header">
+      <p class="eyebrow intro-label">{project.category}</p>
+      <h1>{project.title}</h1><p class="about-lede">{project.summary}</p>
+    </header>
+    <section><h2>Guiding question</h2><blockquote>{project.question}</blockquote></section>
+    {project.sections.map(section => <section><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}</section>)}
+    {other && <aside class="related"><p class="eyebrow">Another project</p><a href={'/projects/' + other.slug + '/'}>{other.title}</a></aside>}
+  </article>
+</Layout>

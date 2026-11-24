@@ -1,0 +1,27 @@
+{
+  "name": "academic-research-notes",
+  "type": "module",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.2.0",
+    "@fontsource-variable/newsreader": "^5.2.0",
+    "@tailwindcss/vite": "4.3.5",
+    "astro": "6.4.8",
+    "tailwindcss": "4.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "5.9.3",
+    "vite": "^7.3.2"
+  }
+}

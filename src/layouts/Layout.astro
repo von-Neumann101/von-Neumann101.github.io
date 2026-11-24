@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import { profile } from '../data/profile';
+import Icon from '../components/Icon.astro';
+interface Props { title: string; description: string }
+const {title, description} = Astro.props;
+const links = [['About', 'about'], ['Research', 'research'], ['Projects', 'projects'], ['Contact', 'contact']];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content={description}/>
+    <meta name="theme-color" content="#fbfaf8"/>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}/>
+    <title>{title} · Research Notes</title>
+    <script is:inline>
+      try {
+        if (localStorage.getItem('academic-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
+  </head>
+  <body id="top">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a href="/" class="brand"><span class="brand-mark"><Icon name="book" size={18}/></span>Research Notes</a>
+        <nav aria-label="Main navigation">{links.map(([label,id]) => <a href={'/#' + id}>{label}</a>)}</nav>
+        <button id="theme" hidden class="theme" aria-label="Dark mode" aria-pressed="false">
+          <span class="moon"><Icon name="moon" size={18}/></span><span class="sun"><Icon name="sun" size={18}/></span>
+        </button>
+      </div>
+    </header>
+    <main id="main" class="wrap"><slot/></main>
+    <footer class="wrap footer"><span>{profile.name} <span class="sep">/</span> Research Notes</span><a href="#top">Back to top</a></footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('#theme');
+      if (button) {
+        const root = document.documentElement;
+        const sync = () => {
+          button.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', root.dataset.theme === 'dark' ? '#191820' : '#fbfaf8');
+        };
+        sync();
+        button.hidden = false;
+        button.addEventListener('click', () => {
+          root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          try { localStorage.setItem('academic-theme', root.dataset.theme); } catch {}
+          sync();
+        });
+        window.addEventListener('storage', event => {
+          if (event.key === 'academic-theme' || event.key === null) {
+            root.dataset.theme = event.newValue === 'dark' ? 'dark' : 'light';
+            sync();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

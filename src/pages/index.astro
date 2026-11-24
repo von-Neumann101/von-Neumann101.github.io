@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Surface from '../components/Surface.astro';
+import Icon from '../components/Icon.astro';
+import {profile, initials, interests} from '../data/profile';
+import {projects} from '../data/projects';
+---
+<Layout title={profile.name} description="Undergraduate research notes on mechanistic interpretability, algorithmic reasoning, and neural representations at BUPT.">
+  <section class="hero" aria-labelledby="hero-title">
+    <div>
+      <p class="eyebrow intro-label">Academic profile</p>
+      <h1 id="hero-title">{profile.name}</h1>
+      <p class="affiliation">Undergraduate in {profile.degree}<br/><span>{profile.university}</span></p>
+      <p class="intro">I study how neural networks represent information and learn to carry out algorithms.</p>
+      <div class="hero-links flex flex-wrap items-center gap-x-6 gap-y-3">
+        <a href={profile.github}><Icon name="github"/>GitHub</a>
+        <a href={'mailto:' + profile.email}><Icon name="mail"/>Email</a>
+        {profile.cv ? <a href={profile.cv}><Icon name="file"/>CV</a> : <span class="cv-placeholder" title="A CV will be added here."><Icon name="file"/>CV <small>(pending)</small></span>}
+      </div>
+    </div>
+    <Surface/>
+  </section>
+  <section id="about" class="section-row">
+    <h2>About Me</h2>
+    <div><p class="about-lede">I’m an undergraduate at BUPT, where I study Digital Media Technology. My research interests start with a simple question: what happens inside a model between reading an input and producing an answer?</p>
+      <p class="body-text">I explore this through small algorithmic tasks and hands-on Transformer implementations. For a task like parity, I can write down exactly what the model needs to remember after each input.</p>
+    </div>
+  </section>
+  <section id="research" class="section-row">
+    <h2>Research Interests</h2>
+    <div class="interest-list">{interests.map(i => <div><h3>{i.title}</h3><p>{i.text}</p></div>)}</div>
+  </section>
+  <section id="projects" class="section-row">
+    <h2>Selected Projects</h2>
+    <div class="project-list">{projects.map(p => <article>
+      <p class="eyebrow">{p.category}</p>
+      <h3><a href={'/projects/' + p.slug + '/'}>{p.title}</a></h3>
+      <p>{p.summary}</p><a class="read-link" href={'/projects/' + p.slug + '/'} aria-label={'Read project notes on ' + p.title}>Read project notes</a>
+    </article>)}</div>
+  </section>
+  <section id="contact" class="section-row">
+    <h2>Contact</h2>
+    <div>
+      <div class="person flex items-center gap-3">
+        {profile.avatar ? <img class="avatar" src={profile.avatar} alt={profile.name} width="48" height="48"/> : <span class="avatar initials" aria-hidden="true">{initials}</span>}
+        <div><h3>{profile.name}</h3><p>{profile.university}</p></div>
+      </div>
+      <p class="body-text">If you’re working on interpretability or have a different way of thinking about these experiments, I’d love to hear from you.</p>
+      <div class="contact-links flex flex-wrap gap-x-6 gap-y-3"><a href={'mailto:' + profile.email}>{profile.email}</a><a href={profile.github}>GitHub profile</a></div>
+    </div>
+  </section>
+</Layout>
