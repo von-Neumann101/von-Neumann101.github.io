@@ -81,6 +81,12 @@ h3 { font-size: 1.65rem; line-height: 1.22; }
 .detail-header { padding-block: 2.7rem; border-bottom: 1px solid var(--rule); }
 .detail h1 { font-size: clamp(2.8rem, 5.6vw, 5.3rem); line-height: 1.02; margin-block: 1.2rem; }
 .detail section { margin-top: 2.6rem; }
+.worked-example { width: 100%; margin-block: 1.6rem; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+.worked-example caption { text-align: left; font-family: var(--serif); font-size: 1.25rem; margin-bottom: .65rem; }
+.worked-example th, .worked-example td { border-bottom: 1px solid var(--rule); padding: .65rem clamp(.35rem, 2vw, 1rem); }
+.worked-example thead { background: var(--tint); color: var(--accent); font-size: .9rem; }
+.worked-example tbody { color: var(--body); font-size: .95rem; }
+.worked-example tbody th { font-weight: 500; }
 .detail section > p, .detail blockquote { margin-top: 1rem; }
 .detail blockquote { border-left: 2px solid var(--accent); padding-left: 1.25rem; color: var(--body); font: 400 1.55rem/1.45 var(--serif); }
 .related { margin-top: 3.5rem; border-top: 1px solid var(--rule); padding-top: 1.5rem; }

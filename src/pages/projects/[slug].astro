@@ -16,7 +16,17 @@ const other = projects.find(p => p.slug !== project.slug);
       <h1>{project.title}</h1><p class="about-lede">{project.summary}</p>
     </header>
     <section><h2>Guiding question</h2><blockquote>{project.question}</blockquote></section>
-    {project.sections.map(section => <section><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}</section>)}
+    {project.sections.map((section, index) => <section>
+      <h2>{section.title}</h2>
+      {section.paragraphs.map(p => <p>{p}</p>)}
+      {index === 0 && <table class="worked-example">
+        <caption>{project.example.caption}</caption>
+        <thead><tr>{project.example.columns.map(label => <th scope="col">{label}</th>)}</tr></thead>
+        <tbody>{project.example.rows.map(([label, ...cells]) => <tr>
+          <th scope="row">{label}</th>{cells.map(cell => <td>{cell}</td>)}
+        </tr>)}</tbody>
+      </table>}
+    </section>)}
     {other && <aside class="related"><p class="eyebrow">Another project</p><a href={'/projects/' + other.slug + '/'}>{other.title}</a></aside>}
   </article>
 </Layout>
